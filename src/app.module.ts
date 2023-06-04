@@ -22,7 +22,7 @@ import { User } from './users/entities/user.entity';
     UsersModule,
     WishesModule,
     WishlistsModule,
-    OffersModule
+    OffersModule,
   ],
   controllers: [AppController],
   providers: [],
