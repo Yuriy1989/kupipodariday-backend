@@ -1,37 +1,42 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsEmail, IsInt, Length, Min } from 'class-validator';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class User {
+  @IsInt()
+  @Min(0)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
+  @Length(2, 30)
   username: string;
 
-  @Column()
+  @Column({ default: 'Пока ничего не рассказал о себе' })
+  @Length(2, 30)
   about: string;
 
-  @Column()
+  @Column({ default: 'https://i.pravatar.cc/300' })
   avatar: string;
 
-  @Column()
+  @IsEmail({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
-  @Column()
-  wishes: string;
+  // @Column()
+  // wishes: string;
 
-  @Column()
-  offers: string;
+  // @Column()
+  // offers: string;
 
-  @Column()
-  wishlists: string;
+  // @Column()
+  // wishlists: string;
 
-  @Column()
-  createdAt: Date;
+  // @CreateDateColumn()
+  // createdAt: Date;
 
-  @Column()
-  updatedAt: Date;
+  // @UpdateDateColumn()
+  // updatedAt: Date;
 }
