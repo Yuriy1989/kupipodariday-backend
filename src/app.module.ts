@@ -11,7 +11,8 @@ import { Wish } from './wishes/entities/wish.entity';
 import { Wishlist } from './wishlists/entities/wishlist.entity';
 
 @Module({
-  imports: [UsersModule,
+  imports: [
+    UsersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

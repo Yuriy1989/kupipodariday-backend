@@ -1,25 +1,31 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Offer {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    user: number;
+  @Column()
+  user: number;
 
-    @Column()
-    item: string;
+  @Column()
+  item: string;
 
-    @Column()
-    amount: number;
+  @Column()
+  amount: number;
 
-    @Column({ default: false })
-    hidden: boolean;
+  @Column({ default: false })
+  hidden: boolean;
 
-    @CreateDateColumn()
-    createdAt: Date;
-  
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
