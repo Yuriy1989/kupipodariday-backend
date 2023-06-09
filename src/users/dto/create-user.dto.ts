@@ -1,9 +1,8 @@
 import {
-  IsDate,
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsString,
+  IsUrl,
   Length,
 } from 'class-validator';
 
@@ -16,7 +15,7 @@ export class CreateUserDto {
   @Length(2, 30)
   about: string;
 
-  @IsString()
+  @IsUrl()
   avatar: string;
 
   @IsEmail()

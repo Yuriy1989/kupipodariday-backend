@@ -1,4 +1,4 @@
-import { Length } from 'class-validator';
+import { IsInt, IsString, Length, Min } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -9,37 +9,48 @@ import {
 
 @Entity()
 export class Wish {
+  @IsInt()
+  @Min(0)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @IsString()
   @Column()
   @Length(1, 250)
   name: string;
 
+  @IsString()
   @Column()
   link: string;
 
+  @IsString()
   @Column()
   image: string;
 
+  @IsInt()
   @Column()
   price: number;
 
+  @IsInt()
   @Column()
   raised: number;
 
-  @Column()
-  owner: string;
+  // @IsString()
+  // @Column()
+  // owner: string;
 
+  @IsString()
   @Column()
   @Length(1, 1014)
   description: string;
 
-  @Column()
-  offers: string;
+  // @IsString()
+  // @Column()
+  // offers: string;
 
-  @Column()
-  copied: number;
+  // @IsInt()
+  // @Column()
+  // copied: number;
 
   @CreateDateColumn()
   createdAt: Date;
