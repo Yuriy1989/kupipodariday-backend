@@ -1,8 +1,10 @@
 import { IsInt, IsString, Length, Min } from 'class-validator';
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -35,9 +37,8 @@ export class Wish {
   @Column()
   raised: number;
 
-  // @IsString()
-  // @Column()
-  // owner: string;
+  @ManyToMany(() => User, (user) => user.wishes)
+  owner: User;
 
   @IsString()
   @Column()

@@ -1,8 +1,10 @@
 import { IsEmail, IsInt, Length, Min } from 'class-validator';
+import { Wish } from 'src/wishes/entities/wish.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -31,8 +33,8 @@ export class User {
   @Column()
   password: string;
 
-  // @Column()
-  // wishes: string;
+  @OneToMany(() => Wish, (wish) => wish.owner)
+  wishes: Wish[];
 
   // @Column()
   // offers: string;

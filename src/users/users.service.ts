@@ -12,16 +12,19 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
-    return this.userRepository.save(createUserDto);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = await this.userRepository.save(createUserDto);
+    return user; 
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findOne(id: number) {
+    const user = await await this.userRepository.findOneBy({ id });
+    return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findByUsername(username: string) {
+    const user = await this.userRepository.findOneBy({ username }); //возможно надо findOne
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -30,5 +33,5 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
-  }
+  } 
 }
