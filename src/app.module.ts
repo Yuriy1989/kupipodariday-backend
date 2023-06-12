@@ -8,6 +8,7 @@ import { OffersModule } from './offers/offers.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { AppService } from './config/appService';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AppService } from './config/appService';
     TypeOrmModule.forRootAsync({
       useClass: AppService
     }),
+    AuthModule,
     UsersModule,
     WishesModule,
     WishlistsModule,

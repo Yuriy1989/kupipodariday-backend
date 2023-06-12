@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
-import { SALT } from "src/constants";
+import * as bcrypt from 'bcrypt';
+import { SALT } from '../constants';
 
 export const createHash = (data: string) => {
-    return bcrypt.hash(data, SALT);
+  return bcrypt.hash(data, 10);
 }
 
 export const checkHash = (data: string, hash: string) => {

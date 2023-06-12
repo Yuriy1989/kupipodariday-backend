@@ -12,7 +12,7 @@ export class CreateUserDto {
   username: string;
 
   @IsString()
-  @Length(2, 30)
+  @Length(2, 200)
   about: string;
 
   @IsUrl()
