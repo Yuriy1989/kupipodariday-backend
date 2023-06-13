@@ -11,7 +11,7 @@ export class AuthController {
         private authService: AuthService,
     ) {}
 
-    @UseGuards(LocalGuard)
+    // @UseGuards(LocalGuard)
     @Post('signin')
     signin(@Req() req) {
         return this.authService.auth(req.user);

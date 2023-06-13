@@ -1,19 +1,20 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import * as dotenv from 'dotenv';
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { UsersService } from "src/users/users.service";
+dotenv.config();
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     constructor(
         private configService: ConfigService,
         private userService: UsersService,
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            // secretOrKey: configService.get<string>('jwt.secret'),
-            secretOrKey: "jwt.secret"
+            secretOrKey: configService.get<string>('jwt.secret') || 'jwtsecret',
         });
     }
 
@@ -21,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         const user = await this.userService.findOne(jwtPayload.sub);
 
         if(!user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Неверный токен пользователя');
         }
 
         return user;
