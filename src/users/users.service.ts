@@ -15,13 +15,10 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { password } = createUserDto;
-   
-    console.log("password", password);
-    const t = await createHash(password);
-    console.log("hash", t);
-      const user = this.userRepository.create({
+    const hash = await createHash(password);
+    const user = this.userRepository.create({
       ...createUserDto,
-      password: t,
+      password: hash,
     });
     return this.userRepository.save(user);
   }
@@ -44,7 +41,7 @@ export class UsersService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const { password } = updateUserDto;
     const user = await this.findOne(id);
-    if(password) {
+    if (password) {
       updateUserDto.password = await createHash(password);
     }
     return this.userRepository.save({ ...user, ...updateUserDto });

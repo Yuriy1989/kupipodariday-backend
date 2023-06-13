@@ -14,10 +14,10 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration]
+      load: [configuration],
     }),
     TypeOrmModule.forRootAsync({
-      useClass: AppService
+      useClass: AppService,
     }),
     AuthModule,
     UsersModule,

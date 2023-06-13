@@ -8,5 +8,5 @@ export default () => ({
     user: process.env.DATABASE_USERNAME || 'student',
     password: process.env.DATABASE_PASSWORD || 'student',
     name: process.env.DATABASE_NAME || 'kupipodariday',
-  }
-})
+  },
+});

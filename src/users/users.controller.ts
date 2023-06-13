@@ -15,9 +15,7 @@ import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
-  constructor(
-    private usersService: UsersService
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -27,7 +25,7 @@ export class UsersController {
   @Get('me')
   async findMe(@Req() req) {
     console.log('user = ', req);
-    const n = "123";
+    const n = '123';
 
     return n;
     // return await this.usersService.findMe({
@@ -39,14 +37,14 @@ export class UsersController {
     //     email: true,
     //     createdAt: true,
     //     updatedAt: true,
-    //   }, 
+    //   },
     // });
   }
 
-  // @Get ('me/posts') 
+  // @Get ('me/posts')
   // async findMyPosts(        user: User): Promise<Post[]> {
   //   return await  this.posr
-  // } 
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

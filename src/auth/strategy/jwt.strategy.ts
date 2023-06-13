@@ -1,30 +1,37 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
-import { PassportStrategy } from "@nestjs/passport";
-import { ExtractJwt, Strategy } from "passport-jwt";
-import { UsersService } from "src/users/users.service";
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { UsersService } from 'src/users/users.service';
 dotenv.config();
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-    constructor(
-        private configService: ConfigService,
-        private userService: UsersService,
-    ) {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: configService.get<string>('jwt.secret') || 'jwtsecret',
-        });
-    }
+  constructor(
+    private configService: ConfigService,
+    private usersService: UsersService,
+  ) {
+    console.log('123');
 
-    async validate(jwtPayload: { sub: number }) {
-        const user = await this.userService.findOne(jwtPayload.sub);
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: configService.get<string>('jwt.secret') || 'jwtsecret',
+    });
+  }
 
-        if(!user) {
-            throw new UnauthorizedException('Неверный токен пользователя');
-        }
+  // async validate(jwtPayload: { sub: number }) {
+  //   const user = await this.usersService.findOne(sub);
 
-        return user;
-    }
+  //   if (!user) {
+  //     throw new UnauthorizedException('Неверный токен пользователя');
+  //   }
+
+  //   return user;
+  // }
+
+  async validate(payload: any) {
+    return { userId: payload.sub, username: payload.username };
+  }
 }

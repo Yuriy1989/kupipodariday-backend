@@ -1,15 +1,15 @@
-import { IsBoolean, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class CreateOfferDto {
-    @IsNumber()
-    user: number;
-  
-    @IsString()
-    item: string;
-  
-    @IsNumber()
-    amount: number;
-  
-    @IsBoolean()
-    hidden: boolean;
+  @IsNumber()
+  user: number;
+
+  @IsString()
+  item: string;
+
+  @IsNumber()
+  amount: number;
+
+  @IsBoolean()
+  hidden: boolean;
 }

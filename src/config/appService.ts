@@ -19,7 +19,6 @@ export class AppService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('database.name'),
       entities: [User, Offer, Wish, Wishlist],
       synchronize: true,
-    }
+    };
   }
 }
-
