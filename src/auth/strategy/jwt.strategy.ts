@@ -12,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     private configService: ConfigService,
     private usersService: UsersService,
   ) {
-    console.log('123');
+    console.log('JwtStrategy', configService.get<string>('jwt.secret'));
 
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,17 +21,18 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  // async validate(jwtPayload: { sub: number }) {
-  //   const user = await this.usersService.findOne(sub);
+  async validate(jwtPayload: { sub: number }) {
+    const user = await this.usersService.findOne(jwtPayload.sub);
+    console.log("user validate jwtPayload", user);
 
-  //   if (!user) {
-  //     throw new UnauthorizedException('Неверный токен пользователя');
-  //   }
+    if (!user) {
+      throw new UnauthorizedException('Неверный токен пользователя');
+    }
 
-  //   return user;
-  // }
-
-  async validate(payload: any) {
-    return { userId: payload.sub, username: payload.username };
+    return user;
   }
+
+  // async validate(payload: any) {
+  //   return { userId: payload.sub, username: payload.username };
+  // }
 }

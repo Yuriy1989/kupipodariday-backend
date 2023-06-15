@@ -14,13 +14,14 @@ export class AuthService {
 
   async auth(user: ILoginUser) {
     // const { username, id: sub } = user;
-    console.log('user', user);
-    const payload = { sub: user.password, username: user.username };
+    console.log('user auth', user);
+    const payload = { username: user.username, sub: user.id };
     return { access_token: this.jwtService.sign(payload) };
   }
 
   async validatePassword(username: string, password: string) {
     const user = await this.usersService.findByUsername(username);
+    console.log("validatePassword = ", user);
     const checkPassword = await checkHash(password, user.password);
 
     if (user && checkPassword) {

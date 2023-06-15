@@ -37,8 +37,8 @@ export class Wish {
   @Column()
   raised: number;
 
-  @ManyToMany(() => User, (user) => user.wishes)
-  owner: User;
+  // @ManyToMany(() => User, (user) => user.wishes)
+  // owner: User;
 
   @IsString()
   @Column()

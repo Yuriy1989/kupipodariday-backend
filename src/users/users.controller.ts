@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { JwtGuard } from 'src/auth/guards/jwtAuth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -22,29 +24,28 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JwtGuard)
   @Get('me')
-  async findMe(@Req() req) {
-    console.log('user = ', req);
-    const n = '123';
-
-    return n;
-    // return await this.usersService.findMe({
-    //   where: {  id: req.user.id },
-    //   select: {
-    //     username: true,
-    //     about: true,
-    //     avatar: true,
-    //     email: true,
-    //     createdAt: true,
-    //     updatedAt: true,
-    //   },
-    // });
+  async findMe(@Req() req): Promise<User> {
+    console.log('user Get = ', req.user);
+    return await this.usersService.findMe({
+      where: {  id: req.user.id },
+      select: {
+        id: true,
+        username: true,
+        about: true,
+        avatar: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
-  // @Get ('me/posts')
-  // async findMyPosts(        user: User): Promise<Post[]> {
-  //   return await  this.posr
-  // }
+  @Get('me/wishes')
+  getMeWishes() {
+    return this.usersService.getMeWishes();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

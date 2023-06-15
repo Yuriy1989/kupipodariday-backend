@@ -31,4 +31,12 @@ export class WishesService {
   remove(id: number) {
     return this.wishRepository.delete({ id });
   }
+
+  topWishes () {
+    return "topWishes";
+  }
+
+  lastWishes () {
+    return "lastWishes";
+  }
 }

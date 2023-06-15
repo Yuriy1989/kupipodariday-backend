@@ -1,4 +1,5 @@
-import { IsEmail, IsInt, Length, Min } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { IsEmail, IsInt, IsUrl, Length, Min, MinLength } from 'class-validator';
 import { Wish } from 'src/wishes/entities/wish.entity';
 import {
   Column,
@@ -25,16 +26,20 @@ export class User {
   about: string;
 
   @Column({ default: 'https://i.pravatar.cc/300' })
+  @IsUrl()
   avatar: string;
 
-  @IsEmail({ unique: true })
+  @Column({ unique: true })
+  @IsEmail()
   email: string;
 
+  @Exclude()
   @Column()
+  @MinLength(6)
   password: string;
 
-  @OneToMany(() => Wish, (wish) => wish.owner)
-  wishes: Wish[];
+  // @OneToMany(() => Wish, (wish) => wish.owner)
+  // wishes: Wish[];
 
   // @Column()
   // offers: string;
