@@ -16,11 +16,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guards/jwtAuth.guard';
 
 @ApiTags('Wishes')
-@UseGuards(JwtGuard)
 @Controller('wishes')
 export class WishesController {
   constructor(private readonly wishesService: WishesService) {}
 
+  @UseGuards(JwtGuard)
   @Post()
   create(@Req() req, @Body() createWishDto: CreateWishDto) {
     return this.wishesService.create(req.user, createWishDto);

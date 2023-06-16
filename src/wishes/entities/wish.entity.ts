@@ -35,7 +35,7 @@ export class Wish {
   price: number;
 
   @IsInt()
-  @Column()
+  @Column({ default: 0 })
   raised: number;
 
   @ManyToOne(() => User, (user) => user.wishes)

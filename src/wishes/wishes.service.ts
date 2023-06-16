@@ -21,11 +21,11 @@ export class WishesService {
       owner: user,
     });
     // console.log("wish", wish);
-    const linkOnWish = this.usersService.addWish(user.id, wish);
+    // const linkOnWish = this.usersService.addWish(user.id, wish);
     // console.log("linkOnWisht", linkOnWish);
 
-    const t = this.wishRepository.save(wish);
-    return t;
+    // const t = this.wishRepository.save(wish);
+    return this.wishRepository.save(wish);
   }
 
   findAll(): Promise<Wish[]> {
@@ -45,6 +45,7 @@ export class WishesService {
   }
 
   topWishes() {
+    const topWish = this.wishRepository.find();
     return 'topWishes';
   }
 
