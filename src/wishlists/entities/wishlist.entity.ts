@@ -1,8 +1,11 @@
-import { Length } from 'class-validator';
+import { Length, MaxLength } from 'class-validator';
+import { User } from '../../users/entities/user.entity';
+import { Wish } from '../../wishes/entities/wish.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -16,14 +19,18 @@ export class Wishlist {
   @Length(1, 250)
   name: string;
 
-  @Column({ length: 1500 })
+  @Column()
+  @MaxLength(1500)
   description: string;
 
   @Column()
   image: string;
 
-  @Column()
-  items: string;
+  @ManyToOne(() => Wish, (wish) => wish.offers)
+  items: Wish[];
+
+  @ManyToOne(() => User, (user) => user.wishlists)
+  owner: User;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,4 +1,4 @@
-import { IsString, Length } from 'class-validator';
+import { IsString, IsUrl, Length, MaxLength } from 'class-validator';
 
 export class CreateWishlistDto {
   @IsString()
@@ -6,11 +6,10 @@ export class CreateWishlistDto {
   name: string;
 
   @IsString()
+  @MaxLength(1500)
   description: string;
 
   @IsString()
+  @IsUrl()
   image: string;
-
-  @IsString()
-  items: string;
 }

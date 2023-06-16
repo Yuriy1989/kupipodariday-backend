@@ -3,9 +3,10 @@ import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 import { LocalGuard } from './guards/local.guard';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { LoginUserDto } from '../users/dto/login-user.dto';
-import { ILoginUser } from '../utils/types';
+import { ApiTags } from '@nestjs/swagger';
+import { SigninToketDto, ResponceSigninToketDto } from './dto/signin.dto';
 
+@ApiTags('Auth')
 @Controller('')
 export class AuthController {
   constructor(
@@ -15,16 +16,16 @@ export class AuthController {
 
   @UseGuards(LocalGuard)
   @Post('signin')
-  signin(@Req() req, @Body() loginUserDto: ILoginUser) {
-    console.log("loginUserDto signin", loginUserDto);
-    console.log("req signin", req);
-    return this.authService.auth(loginUserDto);
+  signin(
+    @Req() req,
+    @Body() signinToketDto: SigninToketDto,
+  ): Promise<ResponceSigninToketDto> {
+    return this.authService.auth(req.user.id, signinToketDto);
   }
 
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto) {
     const user = this.usersService.create(createUserDto);
-    // return this.authService.auth(await user);
     return user;
   }
 }

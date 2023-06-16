@@ -23,7 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate(jwtPayload: { sub: number }) {
     const user = await this.usersService.findOne(jwtPayload.sub);
-    console.log("user validate jwtPayload", user);
 
     if (!user) {
       throw new UnauthorizedException('Неверный токен пользователя');

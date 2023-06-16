@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { FindOneOptions, Repository } from 'typeorm';
 import { createHash } from '../utils/hash';
+import { CreateWishDto } from '../wishes/dto/create-wish.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,13 +17,11 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { password } = createUserDto;
     const hash = await createHash(password);
-    console.log('create createUserDto', createUserDto);
     const user = this.userRepository.create({
       ...createUserDto,
       password: hash,
     });
-    console.log('create user', user);
-    return this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
   async findOne(id: number): Promise<User> {
@@ -30,26 +29,31 @@ export class UsersService {
     return user;
   }
 
-  findMe(query: FindOneOptions<User>) {
-    const user = this.userRepository.findOneOrFail(query);
+  async findMe(query: FindOneOptions<User>) {
+    const user = await this.userRepository.findOneOrFail(query);
     return user;
   }
 
   async findByUsername(username: string) {
-    const user = await this.userRepository.findOneBy({ username }); //возможно надо findOne
+    const user = await this.userRepository.findOneBy({ username });
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const { password } = updateUserDto;
     const user = await this.findOne(id);
     if (password) {
       updateUserDto.password = await createHash(password);
     }
-    return this.userRepository.save({ ...user, ...updateUserDto });
+    return await this.userRepository.save({ ...user, ...updateUserDto });
   }
 
-  getMeWishes () {
-    return "getMeWishes";
+  async addWish(id: number, createWishDto: CreateWishDto) {
+    const user = await this.userRepository.findOneBy({ id });
+    console.log('user addWish', user);
+    console.log('user createWishDto', createWishDto);
+    // const userWithWish = this.userRepository.save({ ...user, createWishDto });
+    // console.log('id', id, 'userWithWish', userWithWish);
+    return true;
   }
 }

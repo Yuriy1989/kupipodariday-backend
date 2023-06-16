@@ -1,6 +1,5 @@
 import { Exclude } from 'class-transformer';
 import { IsEmail, IsInt, IsUrl, Length, Min, MinLength } from 'class-validator';
-import { Wish } from 'src/wishes/entities/wish.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Wish } from '../../wishes/entities/wish.entity';
+import { Offer } from '../../offers/entities/offer.entity';
+import { Wishlist } from '../../wishlists/entities/wishlist.entity';
 
 @Entity()
 export class User {
@@ -38,14 +40,14 @@ export class User {
   @MinLength(6)
   password: string;
 
-  // @OneToMany(() => Wish, (wish) => wish.owner)
-  // wishes: Wish[];
+  @OneToMany(() => Wish, (wish) => wish.owner)
+  wishes: Wish[];
 
-  // @Column()
-  // offers: string;
+  @OneToMany(() => Offer, (offer) => offer.user)
+  offers: Offer[];
 
-  // @Column()
-  // wishlists: string;
+  @OneToMany(() => Wishlist, (wishlists) => wishlists.owner)
+  wishlists: Wishlist[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,13 +1,14 @@
-import { IsInt, IsString, Length, Min } from 'class-validator';
-import { User } from 'src/users/entities/user.entity';
+import { IsInt, IsString, IsUrl, Length, Min } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { Offer } from '../../offers/entities/offer.entity';
 
 @Entity()
 export class Wish {
@@ -21,12 +22,12 @@ export class Wish {
   @Length(1, 250)
   name: string;
 
-  @IsString()
   @Column()
+  @IsUrl()
   link: string;
 
-  @IsString()
   @Column()
+  @IsUrl()
   image: string;
 
   @IsInt()
@@ -37,21 +38,20 @@ export class Wish {
   @Column()
   raised: number;
 
-  // @ManyToMany(() => User, (user) => user.wishes)
-  // owner: User;
+  @ManyToOne(() => User, (user) => user.wishes)
+  owner: User;
 
   @IsString()
   @Column()
-  @Length(1, 1014)
+  @Length(1, 1024)
   description: string;
 
-  // @IsString()
-  // @Column()
-  // offers: string;
+  @ManyToOne(() => Offer, (offer) => offer.item)
+  offers: Offer[];
 
-  // @IsInt()
-  // @Column()
-  // copied: number;
+  @IsInt()
+  @Column({ default: 0 })
+  copied: number;
 
   @CreateDateColumn()
   createdAt: Date;
