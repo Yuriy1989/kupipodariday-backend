@@ -26,6 +26,7 @@ export class WishesController {
     return this.wishesService.create(req.user, createWishDto);
   }
 
+  @UseGuards(JwtGuard)
   @Get()
   findAll() {
     return this.wishesService.findAll();
@@ -46,13 +47,28 @@ export class WishesController {
     return this.wishesService.findOne(+id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateWishDto: UpdateWishDto) {
-  //   return this.wishesService.update(+id, updateWishDto);
-  // }
+  @UseGuards(JwtGuard)
+  @Post(':id/copy')
+  async copyWish(@Req() req, @Param('id') id: string) {
+    const wish = await this.wishesService.findOne(+id);
+    return this.wishesService.copyWish(req.user, wish);
+  }
 
+  @UseGuards(JwtGuard)
+  @Patch(':id')
+  async update(
+    @Req() req,
+    @Param('id') id: string,
+    @Body() updateWishDto: UpdateWishDto,
+  ) {
+    const check = await this.wishesService.findOne(+id);
+    console.log("check", check);
+    return this.wishesService.update(+id, updateWishDto);
+  }
+
+  @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Req() req, @Param('id') id: string) {
     return this.wishesService.remove(+id);
   }
 }

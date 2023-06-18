@@ -14,7 +14,7 @@ export interface IUser {
   about: string;
   avatar: string;
   email: string;
-  // wishes: Array<string>;
+  password?: string;
   createdAt: Date;
   updatedAt: Date;
 }

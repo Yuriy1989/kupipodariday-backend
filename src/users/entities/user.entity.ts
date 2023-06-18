@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -40,7 +41,7 @@ export class User {
   @MinLength(6)
   password: string;
 
-  @OneToMany(() => Wish, (wish) => wish.owner)
+  @ManyToMany(() => Wish, (wish) => wish.owner)
   wishes: Wish[];
 
   @OneToMany(() => Offer, (offer) => offer.user)

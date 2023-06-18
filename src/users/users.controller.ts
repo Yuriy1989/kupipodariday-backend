@@ -16,6 +16,7 @@ import { User } from './entities/user.entity';
 import { JwtGuard } from 'src/auth/guards/jwtAuth.guard';
 import { WishesService } from 'src/wishes/wishes.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { LocalGuard } from 'src/auth/guards/local.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -34,7 +35,7 @@ export class UsersController {
   @UseGuards(JwtGuard)
   @Get('me')
   async findMe(@Req() req): Promise<User> {
-    return await this.usersService.findMe({
+    return await this.usersService.findMy({
       where: { id: req.user.id },
       select: {
         id: true,
@@ -58,8 +59,8 @@ export class UsersController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Get('me/wishes')
-  getMeWishes() {
-    return this.wishesService.findAll();
+  getMeWishes(@Req() req) {
+    return this.wishesService.findAllMyWishes(+req.user.id);
   }
 
   @Get(':id')

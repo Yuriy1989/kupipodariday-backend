@@ -29,7 +29,7 @@ export class UsersService {
     return user;
   }
 
-  async findMe(query: FindOneOptions<User>) {
+  async findMy(query: FindOneOptions<User>) {
     const user = await this.userRepository.findOneOrFail(query);
     return user;
   }
@@ -50,10 +50,6 @@ export class UsersService {
 
   async addWish(id: number, createWishDto: CreateWishDto) {
     const user = await this.userRepository.findOneBy({ id });
-    console.log('user addWish', user);
-    console.log('user createWishDto', createWishDto);
-    // const userWithWish = this.userRepository.save({ ...user, createWishDto });
-    // console.log('id', id, 'userWithWish', userWithWish);
     return true;
   }
 }

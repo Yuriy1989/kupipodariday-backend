@@ -1,4 +1,4 @@
-import { Length, MaxLength } from 'class-validator';
+import { IsOptional, Length, MaxLength } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
 import { Wish } from '../../wishes/entities/wish.entity';
 import {
@@ -20,7 +20,6 @@ export class Wishlist {
   name: string;
 
   @Column()
-  @MaxLength(1500)
   description: string;
 
   @Column()

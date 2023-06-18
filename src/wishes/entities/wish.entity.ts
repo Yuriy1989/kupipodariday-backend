@@ -3,6 +3,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -38,8 +40,9 @@ export class Wish {
   @Column({ default: 0 })
   raised: number;
 
-  @ManyToOne(() => User, (user) => user.wishes)
-  owner: User;
+  @ManyToMany(() => User, (user) => user.wishes)
+  @JoinTable()
+  owner: User[];
 
   @IsString()
   @Column()

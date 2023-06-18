@@ -12,7 +12,7 @@ import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Wishes')
+@ApiTags('Wishlists')
 @Controller('wishlists')
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}
