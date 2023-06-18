@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -16,7 +15,6 @@ import { User } from './entities/user.entity';
 import { JwtGuard } from 'src/auth/guards/jwtAuth.guard';
 import { WishesService } from 'src/wishes/wishes.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LocalGuard } from 'src/auth/guards/local.guard';
 
 @ApiTags('Users')
 @Controller('users')

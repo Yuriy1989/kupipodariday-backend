@@ -4,7 +4,6 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -40,9 +39,9 @@ export class Wish {
   @Column({ default: 0 })
   raised: number;
 
-  @ManyToMany(() => User, (user) => user.wishes)
+  @ManyToOne(() => User, (user) => user.wishes)
   @JoinTable()
-  owner: User[];
+  owner: User;
 
   @IsString()
   @Column()
@@ -50,7 +49,7 @@ export class Wish {
   description: string;
 
   @ManyToOne(() => Offer, (offer) => offer.item)
-  offers: Offer[];
+  offers: Offer;
 
   @IsInt()
   @Column({ default: 0 })

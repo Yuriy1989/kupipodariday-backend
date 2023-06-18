@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   UseGuards,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { WishesService } from './wishes.service';
 import { CreateWishDto } from './dto/create-wish.dto';
@@ -51,7 +52,14 @@ export class WishesController {
   @Post(':id/copy')
   async copyWish(@Req() req, @Param('id') id: string) {
     const wish = await this.wishesService.findOne(+id);
-    return this.wishesService.copyWish(req.user, wish);
+    const newWish = await this.wishesService.copyWish(req.user, wish);
+    if (newWish) {
+      const allWish = await this.wishesService.findAll();
+      for (let i = 0; i < allWish.length; i++) {
+        await this.wishesService.addCopied(allWish[i]);
+      }
+    }
+    return newWish;
   }
 
   @UseGuards(JwtGuard)
@@ -61,14 +69,27 @@ export class WishesController {
     @Param('id') id: string,
     @Body() updateWishDto: UpdateWishDto,
   ) {
-    const check = await this.wishesService.findOne(+id);
-    console.log("check", check);
-    return this.wishesService.update(+id, updateWishDto);
+    const oldWish = await this.wishesService.findOne(+id);
+    let newWish;
+    if (oldWish && oldWish.owner.id === Number(req.user.id)) {
+      newWish = await this.wishesService.update(oldWish, updateWishDto);
+      return newWish;
+    } else {
+      throw new UnauthorizedException(
+        'Ошибка обновления информации о подарке!!!',
+      );
+    }
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Req() req, @Param('id') id: string) {
-    return this.wishesService.remove(+id);
+  async remove(@Req() req, @Param('id') id: string) {
+    const wish = await this.wishesService.findOne(+id);
+    if (wish && wish.owner.id === Number(req.user.id)) {
+      await this.wishesService.remove(+id);
+      return { message: 'Подарок удален' };
+    } else {
+      throw new UnauthorizedException('Ошибка удаления!!!');
+    }
   }
 }

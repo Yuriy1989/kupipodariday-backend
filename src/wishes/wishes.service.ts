@@ -16,20 +16,11 @@ export class WishesService {
     private usersService: UsersService,
   ) {}
 
-  // async create(user: User, createWishDto: CreateWishDto): Promise<Wish> {
-  //   const wish = this.wishRepository.create({
-  //     ...createWishDto,
-  //     copied: 1,
-  //     owner: [user],
-  //   });
-  //   return this.wishRepository.save(wish);
-  // }
-
   async create(user: User, createWishDto: CreateWishDto): Promise<Wish> {
     const wish = this.wishRepository.create({
       ...createWishDto,
       copied: 1,
-      owner: [user],
+      owner: user,
     });
     return this.wishRepository.save(wish);
   }
@@ -64,16 +55,16 @@ export class WishesService {
   }
 
   async copyWish(user: User, wish: Wish): Promise<Wish> {
-    const newWish = this.wishRepository.create({
+    const newWish = {
       ...wish,
-      copied: wish.copied + 1,
-      owner: [...wish.owner, user],
-    });
+      id: 0,
+      owner: user,
+    };
     return this.wishRepository.save(newWish);
   }
 
-  async update(id: number, updateWishDto: UpdateWishDto) {
-    return await this.wishRepository.update({ id }, updateWishDto);
+  async update(oldWish: UpdateWishDto, updateWish: UpdateWishDto) {
+    return await this.wishRepository.save({ ...oldWish, ...updateWish });
   }
 
   async remove(id: number) {
@@ -98,5 +89,13 @@ export class WishesService {
     };
     const [data] = await this.wishRepository.findAndCount(options);
     return data;
+  }
+
+  async addCopied(wish: Wish): Promise<Wish> {
+    const newWish = {
+      ...wish,
+      copied: wish.copied + 1,
+    };
+    return this.wishRepository.save(newWish);
   }
 }

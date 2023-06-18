@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { OffersService } from './offers.service';
 import { UpdateOfferDto } from './dto/update-offer.dto';
@@ -21,17 +22,30 @@ import { WishesService } from '../wishes/wishes.service';
 export class OffersController {
   constructor(
     private readonly offersService: OffersService,
-    private readonly wishService: WishesService,
+    private readonly wishesService: WishesService,
   ) {}
 
   @Post()
   async create(@Req() req, @Body() body) {
-    const { amount } = body;
-    const { itemId } = body;
-    const wish = await this.wishService.findOne(itemId);
-    return this.offersService.create(req.user, wish, {
-      amount: String(Math.floor(+amount * 100) / 100),
-    });
+    const { amount, itemId } = body;
+    const wish = await this.wishesService.findOne(itemId);
+    let offers;
+    if (wish.price > amount && wish.price > wish.raised + amount) {
+      offers = await this.offersService.create(req.user, wish, {
+        amount: Math.floor(+amount * 100) / 100,
+      });
+      const updateWish = {
+        ...wish,
+        raised: wish.raised + amount,
+        offers,
+      };
+      await this.wishesService.update(wish, updateWish);
+      return offers;
+    } else {
+      throw new BadRequestException(
+        'Сумма вложения превышает стоимость подарка',
+      );
+    }
   }
 
   @Get()

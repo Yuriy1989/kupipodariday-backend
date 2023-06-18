@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { FindOneOptions, Repository } from 'typeorm';
 import { createHash } from '../utils/hash';
-import { CreateWishDto } from '../wishes/dto/create-wish.dto';
 
 @Injectable()
 export class UsersService {
@@ -46,10 +45,5 @@ export class UsersService {
       updateUserDto.password = await createHash(password);
     }
     return await this.userRepository.save({ ...user, ...updateUserDto });
-  }
-
-  async addWish(id: number, createWishDto: CreateWishDto) {
-    const user = await this.userRepository.findOneBy({ id });
-    return true;
   }
 }

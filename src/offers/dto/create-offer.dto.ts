@@ -4,5 +4,5 @@ import { IsString } from 'class-validator';
 export class CreateOfferDto {
   @IsString()
   @ApiProperty({ example: '120.99' })
-  amount: string;
+  amount: number;
 }

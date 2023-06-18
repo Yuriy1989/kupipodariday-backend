@@ -1,4 +1,4 @@
-import { IsOptional, Length, MaxLength } from 'class-validator';
+import { Length } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
 import { Wish } from '../../wishes/entities/wish.entity';
 import {

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { checkHash } from '../utils/hash';
 import { ILoginUser } from '../utils/types';
@@ -24,6 +23,7 @@ export class AuthService {
     }
     const checkPassword = await checkHash(password, user.password);
     if (user && checkPassword) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
 
       return result;

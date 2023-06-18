@@ -21,7 +21,7 @@ export class Offer {
   item: Wish;
 
   @Column()
-  amount: string;
+  amount: number;
 
   @Column({ default: false })
   hidden: boolean;
