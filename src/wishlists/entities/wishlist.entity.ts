@@ -1,10 +1,12 @@
-import { Length } from 'class-validator';
+import { IsOptional, Length } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
 import { Wish } from '../../wishes/entities/wish.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -19,13 +21,15 @@ export class Wishlist {
   @Length(1, 250)
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
+  @IsOptional()
   description: string;
 
   @Column()
   image: string;
 
-  @ManyToOne(() => Wish, (wish) => wish.offers)
+  @ManyToMany(() => Wish, (wish) => wish.wishlists)
+  @JoinTable()
   items: Wish[];
 
   @ManyToOne(() => User, (user) => user.wishlists)

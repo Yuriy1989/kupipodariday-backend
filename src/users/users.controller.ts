@@ -20,8 +20,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @Controller('users')
 export class UsersController {
   constructor(
-    private usersService: UsersService,
-    private wishesService: WishesService,
+    private readonly usersService: UsersService,
+    private readonly wishesService: WishesService,
   ) {}
 
   @Post()
@@ -61,8 +61,25 @@ export class UsersController {
     return this.wishesService.findAllMyWishes(+req.user.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  @Get(':username')
+  findOneUsername(@Param('username') username: string) {
+    return this.usersService.findByUsername(username);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  @Post('find')
+  findMany(@Body() body) {
+    const { query } = body;
+    return this.usersService.findMany(query);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  @Get(':id/wishes')
+  getMyWishesSearch(@Req() req) {
+    return this.wishesService.findAllMyWishes(+req.user.id);
   }
 }
