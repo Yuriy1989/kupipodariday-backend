@@ -1,10 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { CreateWishDto } from './dto/create-wish.dto';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { FindManyOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wish } from './entities/wish.entity';
 import { User } from '../users/entities/user.entity';
-import { UsersService } from '../users/users.service';
 import { LAST_TAKE, SKIP, TOP_TAKE } from '../constants';
 import { UpdateWishDto } from './dto/update-wish.dto';
 
@@ -13,10 +11,9 @@ export class WishesService {
   constructor(
     @InjectRepository(Wish)
     private readonly wishRepository: Repository<Wish>,
-    private usersService: UsersService,
   ) {}
 
-  async create(user: User, createWishDto: CreateWishDto): Promise<Wish> {
+  async create(user: User, createWishDto) {
     const wish = this.wishRepository.create({
       ...createWishDto,
       copied: 1,
@@ -63,7 +60,12 @@ export class WishesService {
     return this.wishRepository.save(newWish);
   }
 
-  async update(oldWish: UpdateWishDto, updateWish: UpdateWishDto) {
+  async update(oldWish: Wish, updateWish: UpdateWishDto) {
+    if (oldWish.price && oldWish.raised > 0) {
+      throw new ForbiddenException(
+        'Вы не можете изменять стоимость подарка, если уже есть желающие скинуться',
+      );
+    }
     return await this.wishRepository.save({ ...oldWish, ...updateWish });
   }
 

@@ -4,12 +4,15 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Offer } from '../../offers/entities/offer.entity';
+import { Wishlist } from '../../wishlists/entities/wishlist.entity';
 
 @Entity()
 export class Wish {
@@ -48,8 +51,11 @@ export class Wish {
   @Length(1, 1024)
   description: string;
 
-  @ManyToOne(() => Offer, (offer) => offer.item)
-  offers: Offer;
+  @OneToMany(() => Offer, (offer) => offer.item)
+  offers: Offer[];
+
+  @ManyToMany(() => Wishlist, (wishlists) => wishlists.items)
+  wishlists: Wishlist[];
 
   @IsInt()
   @Column({ default: 0 })
